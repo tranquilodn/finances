@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<f:metadata>
+	<f:viewAction action="#{categoryMB.prepareView()}" />
+</f:metadata>
+
+<h:form>
+    <p:panel id="panel">
+    	<f:facet name="header">#{msg['category']} #{msg['label.details']}</f:facet>
+    	
+        <h:panelGrid columns="2" cellpadding="4" style="width: 70%">
+        
+            <c:choose>
+				<c:when test="#{categoryMB.locale == 'en_GB'}">
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['category.categoryType']}" />
+			        <p:selectOneMenu id="categoryType" value="#{categoryMB.category.categoryType}" disabled="true" required="true"
+			        	valueChangeListener="#{categoryMB.category.categoryTypeChangeListener}" effect="fold" editable="false">
+			            <f:selectItems var="ct" value="#{categoryMB.categoryTypes}" itemLabel="#{ct.labelEnGb}" />
+			        </p:selectOneMenu>
+
+				</c:when>
+				<c:otherwise>
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['category.categoryType']}" />
+			        <p:selectOneMenu id="categoryType" value="#{categoryMB.category.categoryType}" disabled="true" required="true"
+			        	valueChangeListener="#{categoryMB.category.categoryTypeChangeListener}" effect="fold" editable="false">
+			            <f:selectItems var="ct" value="#{categoryMB.categoryTypes}" itemLabel="#{ct.labelPtBr}" />
+			        </p:selectOneMenu>
+
+				</c:otherwise>
+	        </c:choose>
+
+           	<p:outputLabel id="nameEnGbLabel" for="nameEnGb" value="#{msg['category.nameEnGb']}" />
+            <p:inputText id="nameEnGb" value="#{categoryMB.category.nameEnGb}" size="40" disabled="true" />
+
+           	<p:outputLabel id="namePtBrLabel" for="namePtBr" value="#{msg['category.namePtBr']}" />
+            <p:inputText id="namePtBr" value="#{categoryMB.category.namePtBr}" size="40" disabled="true" />
+
+           	<p:outputLabel id="descriptionLabel" for="description" value="#{msg['category.description']}" />
+            <p:inputText id="description" value="#{categoryMB.category.description}" size="40" disabled="true" />
+
+            <p:outputLabel id="activeLabel" for="active" value="#{msg['category.active']}" />
+	        <p:selectBooleanCheckbox id="active" value="#{categoryMB.category.active}" disabled="true" />
+
+		</h:panelGrid>
+		
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.edit']}" actionListener="#{categoryMB.actionEdit}">
+		<f:attribute name="pageRedirect" value="/pages/category/edit.faces" />
+		<f:attribute name="entityId" value="#{categoryMB.category.id}"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.done']}" actionListener="#{categoryMB.actionDone}">
+		<f:attribute name="pageRedirect" value="/pages/category/list.faces" />
+	</p:commandButton>
+
+</h:form> 
+</ui:define>
+</ui:composition>

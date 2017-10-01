@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<f:metadata>
+	<f:viewAction action="#{transactionMB.prepareView()}" />
+</f:metadata>
+
+<h:form id="form">
+    <p:panel id="panel">
+    	<f:facet name="header">#{transactionMB.categoryType == 'R' ? msg['transaction.revenue'] : msg['transaction.expenditure']} #{msg['label.details']}</f:facet>
+    	
+        <h:panelGrid columns="2" cellpadding="4" style="width: 70%">
+        
+           	<p:outputLabel id="transactionDateLabel" for="transactionDate" value="#{msg['transaction.transactionDate']}" />
+           	<p:calendar id="transactionDate" value="#{transactionMB.transaction.transactionDate}" size="12"
+           		locale="#{transactionMB.locale}" pattern="dd/MM/yyyy" mask="true" disabled="true" />
+
+            <c:choose>
+				<c:when test="#{transactionMB.locale == 'en_GB'}">
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['transaction.categoryType']}" rendered="false" />
+		            <p:panel style="width: 240px" rendered="false">
+				        <p:selectOneRadio id="categoryType" value="#{transactionMB.transaction.categoryType}"
+				        	disabled="true" required="true">
+				            <f:selectItems value="#{transactionMB.categoryTypes}" var="type" itemLabel="#{type.labelEnGb}" />
+				        </p:selectOneRadio>
+			        </p:panel>
+
+					<c:choose>
+						<c:when test="#{transactionMB.categoryType == 'R'}">
+				            <p:outputLabel id="categoryLabel" for="categoryEnGb" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryEnGb" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}"
+					        	disabled="true" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter"
+					        	rendered="#{transactionMB.categoryType == 'R'}">
+					            <f:selectItems var="ct" value="#{categoryList.categoryRevenueEnGbListCombo}"
+					            	itemLabel="#{ct.nameEnGb}" />
+					        </p:selectOneMenu>
+
+					    </c:when>
+					    <c:otherwise>
+				            <p:outputLabel id="categoryLabel" for="categoryEnGb" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryEnGb" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}"
+					        	disabled="true" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter"
+					        	rendered="#{transactionMB.categoryType == 'E'}">
+					            <f:selectItems var="ct" value="#{categoryList.categoryExpenditureEnGbListCombo}"
+					            	itemLabel="#{ct.nameEnGb}" />
+					        </p:selectOneMenu>
+
+					    </c:otherwise>
+					</c:choose>
+
+		            <p:outputLabel id="recordTypeLabel" for="recordType" value="#{msg['transaction.recordType']}" />
+			        <p:selectOneMenu id="recordType" value="#{transactionMB.transaction.recordType}" required="true"
+			        	valueChangeListener="#{transactionMB.transaction.recordTypeChangeListener}" effect="fold"
+			        	editable="false" disabled="true">
+			            <f:selectItems var="rt" value="#{transactionMB.recordTypes}" itemLabel="#{rt.labelEnGb}" />
+			        </p:selectOneMenu>
+
+				</c:when>
+				<c:otherwise>
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['transaction.categoryType']}" rendered="false" />
+		            <p:panel style="width: 240px" rendered="false">
+				        <p:selectOneRadio id="categoryType" value="#{transactionMB.transaction.categoryType}"
+				        	disabled="true" required="true">
+				            <f:selectItems value="#{transactionMB.categoryTypes}" var="type" itemLabel="#{type.labelPtBr}" />
+				        </p:selectOneRadio>
+			        </p:panel>
+
+					<c:choose>
+						<c:when test="#{transactionMB.categoryType == 'R'}">
+				            <p:outputLabel id="categoryLabel" for="categoryPtBr" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryPtBr" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}"
+					        	disabled="true" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter"
+					        	rendered="#{transactionMB.categoryType == 'R'}">
+					            <f:selectItems var="ct" value="#{categoryList.categoryRevenuePtBrListCombo}"
+					            	itemLabel="#{ct.namePtBr}" />
+					        </p:selectOneMenu>
+
+					    </c:when>
+					    <c:otherwise>
+				            <p:outputLabel id="categoryLabel" for="categoryPtBr" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryPtBr" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}"
+					        	disabled="true" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter"
+					        	rendered="#{transactionMB.categoryType == 'E'}">
+					            <f:selectItems var="ct" value="#{categoryList.categoryExpenditurePtBrListCombo}"
+					            	itemLabel="#{ct.namePtBr}" />
+					        </p:selectOneMenu>
+
+					    </c:otherwise>
+					</c:choose>
+
+		            <p:outputLabel id="recordTypeLabel" for="recordType" value="#{msg['transaction.recordType']}" />
+			        <p:selectOneMenu id="recordType" value="#{transactionMB.transaction.recordType}" required="true"
+			        	valueChangeListener="#{transactionMB.transaction.recordTypeChangeListener}" effect="fold"
+			        	editable="false" disabled="true">
+			            <f:selectItems var="rt" value="#{transactionMB.recordTypes}" itemLabel="#{rt.labelPtBr}" />
+			        </p:selectOneMenu>
+
+				</c:otherwise>
+	        </c:choose>
+
+           	<p:outputLabel id="valueLabel" for="value" value="#{msg['transaction.value']}" />
+            <p:inputNumber id="value" value="#{transactionMB.transaction.value}" disabled="true"
+            	decimalSeparator="." thousandSeparator=","/>
+
+           	<p:outputLabel id="historyLabel" for="history" value="#{msg['transaction.history']}" />
+            <p:inputText id="history" value="#{transactionMB.transaction.history}" disabled="true" size="40" />
+
+		</h:panelGrid>
+		
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.edit']}" actionListener="#{transactionMB.actionEdit}">
+		<f:attribute name="pageRedirect" value="/pages/transaction/edit.faces" />
+		<f:attribute name="entityId" value="#{transactionMB.transaction.id}"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.done']}" actionListener="#{categoryMB.actionDone}">
+		<f:attribute name="pageRedirect" value="/pages/transaction/list.faces" />
+	</p:commandButton>
+
+</h:form> 
+</ui:define>
+</ui:composition>
