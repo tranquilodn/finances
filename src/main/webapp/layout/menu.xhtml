@@ -1,0 +1,62 @@
+<h:form xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+<p:menubar autoDisplay="false">
+
+	<c:if test="#{userMB.loggedIn}">
+
+		<c:forEach var="menuGroup" items="#{menuList.menuGroups}">
+			<c:choose>
+				<c:when test="#{menuGroup.link}">
+					<c:choose>
+						<c:when test="#{menuMB.locale == 'en_GB'}">
+							<p:menuitem value="#{menuGroup.labelEnGb}" url="#{menuGroup.url}" />
+						</c:when>
+						<c:otherwise>
+							<p:menuitem value="#{menuGroup.labelPtBr}" url="#{menuGroup.url}" />
+						</c:otherwise>
+					</c:choose>
+				</c:when>
+				<c:otherwise>
+					<c:choose>
+						<c:when test="#{menuMB.locale == 'en_GB'}">
+							<c:if test="#{not empty menuList.getMenuItemsEnGb(menuGroup)}">
+								<p:submenu label="#{menuGroup.labelEnGb}">
+									<c:forEach var="menuItem" items="#{menuList.getMenuItemsEnGb(menuGroup)}">
+										<p:menuitem value="#{menuItem.labelEnGb}" url="#{menuItem.url}" />
+									</c:forEach>
+								</p:submenu>
+							</c:if>
+						</c:when>
+						<c:otherwise>
+							<c:if test="#{not empty menuList.getMenuItemsPtBr(menuGroup)}">
+								<p:submenu label="#{menuGroup.labelPtBr}">
+									<c:forEach var="menuItem" items="#{menuList.getMenuItemsPtBr(menuGroup)}">
+										<p:menuitem value="#{menuItem.labelPtBr}" url="#{menuItem.url}" />
+									</c:forEach>
+								</p:submenu>
+							</c:if>
+						</c:otherwise>
+					</c:choose>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		
+	</c:if>
+
+	<f:facet name="options">
+		<p:commandButton value="#{msg['button.login']}" url="/pages/home.faces"
+			rendered="#{not userMB.loggedIn}"  />
+
+		<p:commandButton value="#{msg['button.logout']}" actionListener="#{userMB.logout}"
+			rendered="#{userMB.loggedIn}">
+			<f:attribute name="pageRedirect" value="/pages/login.faces" />
+		</p:commandButton>
+
+	</f:facet>
+
+</p:menubar>
+</h:form>

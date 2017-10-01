@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/mtemplatelist.xhtml">
+<ui:define name="mbody">
+
+<h:form>
+	<p:commandButton value="#{msg['button.new']} #{msg['menu']}" ajax="false"
+		actionListener="#{menuMB.actionNew}">
+		<f:attribute name="pageRedirect" value="/m/menu/medit.faces" />
+	</p:commandButton>
+
+	<p:panel>
+		<h:outputText value="#{msg['label.noRecords']}"  rendered="#{empty menuList.list}"/>
+			
+		<p:dataTable var="menu" value="#{menuList.list}" rendered="#{not empty menuList.list}"
+			emptyMessage="#{msg['label.noResults']}" sortMode="multiple" 
+			paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+			rows="10" widgetVar="listTable">
+			<f:facet name="header">
+				<p:outputLabel>#{msg['menus']} (#{menuList.list.size()})</p:outputLabel>
+			</f:facet>
+			<!-- Unnecessary column
+			<p:column headerText="#{msg['menu.id']}" width="75" filterBy="#{menu.id}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="1" maxlength="5"/>
+				</f:facet>
+				<h:outputText value="#{menu.id}" />
+			</p:column>
+			-->
+			<c:choose>
+				<c:when test="#{menuMB.locale == 'en_GB'}">			
+					<p:column headerText="#{msg['menu.labelEnGb']}" width="250"
+						filterBy="#{menu.labelEnGb}" sortBy="#{menu.labelEnGb}"
+						footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+						<f:facet name="filter">
+							<p:inputText onkeyup="PF('listTable').filter()" size="20" />
+						</f:facet>
+						<h:outputText value="#{menu.labelEnGb}" />
+					</p:column>
+			
+					<p:column headerText="#{msg['menu.menuType']}" width="150"
+						filterBy="#{menu.menuType.name()}" sortBy="#{menu.menuType.name()}"
+						footerText="#{msg['filter.label.equals']}" filterMatchMode="equals">
+			            <f:facet name="filter">
+			                <p:selectOneMenu onchange="PF('listTable').filter()"
+			                	autoWidth="false" style="width: 100px;">
+			                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+			                    <f:selectItems value="#{menuMB.menuTypes}" var="type"
+			                    	itemLabel="#{type.labelEnGb}"/>
+			                </p:selectOneMenu>
+			            </f:facet>
+						<h:outputText value="#{menu.menuType.labelEnGb}" />
+					</p:column>
+
+				</c:when>
+				<c:otherwise>
+					<p:column headerText="#{msg['menu.labelPtBr']}" width="250"
+						filterBy="#{menu.labelPtBr}" sortBy="#{menu.labelPtBr}"
+						footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+						<f:facet name="filter">
+							<p:inputText onkeyup="PF('listTable').filter()" size="20" />
+						</f:facet>
+						<h:outputText value="#{menu.labelPtBr}" />
+					</p:column>
+
+					<p:column headerText="#{msg['menu.menuType']}" width="150"
+						filterBy="#{menu.menuType.name()}" sortBy="#{menu.menuType.name()}"
+						footerText="#{msg['filter.label.equals']}" filterMatchMode="equals">
+			            <f:facet name="filter">
+			                <p:selectOneMenu onchange="PF('listTable').filter()"
+			                	autoWidth="false" style="width: 100px;">
+			                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+			                    <f:selectItems value="#{menuMB.menuTypes}" var="type"
+			                    	itemLabel="#{type.labelPtBr}"/>
+			                </p:selectOneMenu>
+			            </f:facet>
+						<h:outputText value="#{menu.menuType.labelPtBr}" />
+					</p:column>
+				
+				</c:otherwise>
+			</c:choose>
+
+			<p:column headerText="#{msg['menu.link']}" style="text-align: center;" width="85"
+				filterBy="#{menu.link}" sortBy="#{menu.link}"
+				footerText="#{msg['filter.label.equals']}" filterMatchMode="equals">
+	            <f:facet name="filter">
+	                <p:selectOneMenu onchange="PF('listTable').filter()" autoWidth="false" style="width: 40px;">
+	                    <f:converter converterId="javax.faces.Boolean" />
+	                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+	                    <f:selectItem itemLabel="#{msg['label.yes']}" itemValue="true" />
+	                    <f:selectItem itemLabel="#{msg['label.no']}" itemValue="false" />
+	                </p:selectOneMenu>
+	            </f:facet>
+				<h:outputText value="#{menu.link ? msg['label.yes'] : msg['label.no']}" />
+			</p:column>
+			<p:column headerText="#{msg['menu.url']}" filterBy="#{menu.url}" sortBy="#{menu.url}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="20" />
+				</f:facet>
+				<h:outputText value="#{menu.url}" />
+			</p:column>
+			<p:column headerText="#{msg['menu.position']}" width="100"
+				filterBy="#{menu.position}" sortBy="#{menu.position}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="1" maxlength="2" />
+				</f:facet>
+				<h:outputText value="#{menu.position}" />
+			</p:column>
+
+			<c:choose>
+				<c:when test="#{menuMB.locale == 'en_GB'}">
+					<p:column headerText="#{msg['menu.role']}"
+						filterBy="#{menu.role.name()}" sortBy="#{menu.role.name()}"
+						footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+						<f:facet name="filter">
+			                <p:selectOneMenu onchange="PF('listTable').filter()"
+			                	autoWidth="false" style="width: 100px;">
+			                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+			                    <f:selectItems value="#{menuMB.roleTypes}" var="role"
+			                    	itemLabel="#{role.labelEnGb}"/>
+			                </p:selectOneMenu>
+						</f:facet>
+						<h:outputText value="#{menu.role.labelEnGb}" />
+					</p:column>
+
+				</c:when>
+				<c:otherwise>
+					<p:column headerText="#{msg['menu.role']}"
+						filterBy="#{menu.role.name()}" sortBy="#{menu.role.name()}"
+						footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+						<f:facet name="filter">
+			                <p:selectOneMenu onchange="PF('listTable').filter()"
+			                	autoWidth="false" style="width: 100px;">
+			                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+			                    <f:selectItems value="#{menuMB.roleTypes}" var="role"
+			                    	itemLabel="#{role.labelPtBr}"/>
+			                </p:selectOneMenu>
+						</f:facet>
+						<h:outputText value="#{menu.role.labelPtBr}" />
+					</p:column>
+				
+				</c:otherwise>
+
+			</c:choose>
+
+			<p:column headerText="#{msg['menu.active']}" style="text-align: center;" width="85"
+				filterBy="#{menu.active}" sortBy="#{menu.active}"
+				footerText="#{msg['filter.label.equals']}" filterMatchMode="equals">
+	            <f:facet name="filter">
+	                <p:selectOneMenu onchange="PF('listTable').filter()" autoWidth="false" style="width: 40px;">
+	                    <f:converter converterId="javax.faces.Boolean" />
+	                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+	                    <f:selectItem itemLabel="#{msg['label.yes']}" itemValue="true" />
+	                    <f:selectItem itemLabel="#{msg['label.no']}" itemValue="false" />
+	                </p:selectOneMenu>
+	            </f:facet>
+				<h:outputText value="#{menu.active ? msg['label.yes'] : msg['label.no']}" />
+			</p:column>
+			<p:column style="text-align: center;" width="100">
+				<p:commandLink ajax="false" actionListener="#{menuMB.actionEdit}">
+					<h:outputText value="#{msg['label.edit']}" />
+					<f:attribute name="pageRedirect" value="/m/menu/medit.faces"/>
+					<f:attribute name="entityId" value="#{menu.id}"/>
+				</p:commandLink>
+				#{' | '}
+				<p:commandLink ajax="false" actionListener="#{menuMB.actionView}">
+					<h:outputText value="#{msg['label.view']}" />
+					<f:attribute name="pageRedirect" value="/m/menu/mview.faces"/>
+					<f:attribute name="entityId" value="#{menu.id}"/>
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+</h:form>
+
+</ui:define>
+</ui:composition>

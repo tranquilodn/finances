@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      template="/layout/mtemplate.xhtml">
+<ui:define name="mlogin">
+
+<h:form id="loginForm">
+	<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+
+    <p:panel id="panel">
+    	<f:facet name="header">#{msg['label.login']}</f:facet>
+ 
+		<pm:field>
+			<p:outputLabel id="emailLabel" for="email" value="#{msg['login.username']}" />
+			<p:inputText id="email" value="#{userMB.username}" size="25" maxlength="50" />
+		</pm:field>
+
+		<pm:field>
+			<p:outputLabel id="passwordLabel" for="password" value="#{msg['login.password']}" />
+			<p:password id="password" value="#{userMB.password}" size="25" maxlength="20" />
+		</pm:field>
+
+		<p:commandButton value="#{msg['button.login']}" ajax="@form" actionListener="#{userMB.login}">
+			<f:attribute name="pageRedirect" value="/m/mhome.faces"/>
+		</p:commandButton>
+
+	</p:panel>
+</h:form>
+</ui:define>
+</ui:composition>

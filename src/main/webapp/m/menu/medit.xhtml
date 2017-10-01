@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      template="/layout/mtemplatelist.xhtml">
+<ui:define name="mbody">
+
+<f:metadata>
+	<f:viewAction action="#{menuMB.prepareEdit()}" />
+</f:metadata>
+
+<h:form id="form">
+	<p:messages id="msgs" showDetail="true" />
+	
+    <p:panel id="panel">
+    	<f:facet name="header">#{menuMB.managed ? msg['label.edit'] : msg['label.new']} #{msg['menu']}</f:facet>
+ 		
+		<pm:field>        
+            <p:outputLabel id="labelEnGbLabel" for="labelEnGb" value="#{msg['menu.labelEnGb']}" />
+            <p:inputText id="labelEnGb" value="#{menuMB.menu.labelEnGb}" required="true" size="40">
+                <f:ajax event="blur" execute="@this" render="labelEnGbLabel labelEnGb labelEnGbMsg" />
+            </p:inputText>
+        </pm:field>
+
+        <pm:field>
+            <p:outputLabel id="labelPtBrLabel" for="labelPtBr" value="#{msg['menu.labelPtBr']}" />
+            <p:inputText id="labelPtBr" value="#{menuMB.menu.labelPtBr}" required="true" size="40">
+                <f:ajax event="blur" execute="@this" render="labelPtBrLabel labelPtBr labelPtBrMsg" />
+            </p:inputText>
+        </pm:field>
+
+		<c:choose>
+			<c:when test="#{menuMB.locale == 'en_GB'}">
+				<pm:field>
+		            <p:outputLabel id="menuTypeLabel" for="menuType" value="#{msg['menu.menuType']}" />
+		            <p:panel style="width: 270px">
+				        <p:selectOneRadio id="menuType" value="#{menuMB.menu.menuType}" required="true">
+				        	<f:selectItems value="#{menuMB.menuTypes}" var="type" itemLabel="#{type.labelEnGb}" />
+				            <p:ajax update="panel" />
+				        </p:selectOneRadio>
+			        </p:panel>
+			    </pm:field>
+            	
+            	<pm:field>
+		            <p:outputLabel id="menuGroupLabel" for="menuGroup" value="#{msg['menu.menuGroup']}" />
+			        <p:selectOneMenu id="menuGroup" value="#{menuMB.menu.menuGroup}" required="#{menuMB.menu.menuType == 'I'}"
+			        	valueChangeListener="#{menuMB.menu.menuGroupChangeListener}"
+			        	effect="fold" editable="false" converter="menuConverter">
+			            <f:selectItem itemLabel="#{msg['label.selectOne']}" itemValue="#{null}" />
+			            <f:selectItems var="mg" value="#{menuList.menuComboEnGb}" itemLabel="#{mg.labelEnGb}" />
+			            <p:ajax update="panel" />
+			        </p:selectOneMenu>
+			    </pm:field>
+
+			</c:when>
+			<c:otherwise>
+				<pm:field>
+		            <p:outputLabel id="menuTypeLabel" for="menuType" value="#{msg['menu.menuType']}" />
+<!-- 		            <p:panel style="width: 300px"> -->
+			        <p:selectOneRadio id="menuType" value="#{menuMB.menu.menuType}" required="true"
+			        	valueChangeListener="#{menuMB.menu.menuTypeChangeListener}">
+			        		<f:selectItems value="#{menuMB.menuTypes}" var="type" itemLabel="#{type.labelPtBr}" />
+			            <p:ajax update="panel" />
+			        </p:selectOneRadio>
+<!-- 			        </p:panel> -->
+			    </pm:field>
+            	
+            	<pm:field>
+		            <p:outputLabel id="menuGroupLabel" for="menuGroup" value="#{msg['menu.menuGroup']}" />
+			        <p:selectOneMenu id="menuGroup" value="#{menuMB.menu.menuGroup}" required="#{menuMB.menu.menuType == 'I'}"
+			        	valueChangeListener="#{menuMB.menu.menuGroupChangeListener}"
+			        	effect="fold" editable="false" converter="menuConverter">
+			            <f:selectItem itemLabel="#{msg['label.selectOne']}" itemValue="#{null}" />
+			            <f:selectItems var="mg" value="#{menuList.menuComboPtBr}" itemLabel="#{mg.labelPtBr}" />
+			            <p:ajax update="panel" />
+			        </p:selectOneMenu>
+			    </pm:field>
+
+			</c:otherwise>
+        </c:choose>
+ 
+        <pm:field>
+            <p:outputLabel id="linkLabel" for="link" value="#{msg['menu.link']}" />
+	        <p:selectBooleanCheckbox id="link" value="#{menuMB.menu.link}" required="true"
+	        	valueChangeListener="#{menuMB.menu.linkChangeListener}">
+	            <p:ajax update="panel" />
+	        </p:selectBooleanCheckbox>
+	    </pm:field>
+		
+		<pm:field>
+           	<p:outputLabel id="urlLabel" for="url" value="#{msg['menu.url']}" />
+            <p:inputText id="url" value="#{menuMB.menu.url}" required="#{menuMB.menu.link}" size="40">
+                <f:ajax event="blur" execute="@this" render="urlLabel url urlMsg" />
+            </p:inputText>
+        </pm:field>
+ 		
+ 		<pm:field>
+           	<p:outputLabel id="murlLabel" for="murl" value="#{msg['menu.murl']}" />
+            <p:inputText id="murl" value="#{menuMB.menu.murl}" required="#{menuMB.menu.link}" size="40">
+                <f:ajax event="blur" execute="@this" render="murlLabel murl murlMsg" />
+            </p:inputText>
+        </pm:field>
+
+		<pm:field>
+            <p:outputLabel id="positionLabel" for="position" value="#{msg['menu.position']}" />
+            <p:inputText id="position" value="#{menuMB.menu.position}" required="#{menuMB.menu.menuType == 'G'}"
+            	size="5" maxlength="2">
+                <f:ajax event="blur" execute="@this" render="positionLabel position positionMsg" />
+            </p:inputText>
+        </pm:field>
+
+		<c:choose>
+			<c:when test="#{menuMB.locale == 'en_GB'}">
+				<pm:field>
+		            <p:outputLabel id="roleLabel" for="roleType" value="#{msg['menu.role']}" />
+		            <p:panel style="width: 200px">
+				        <p:selectOneRadio id="roleType" value="#{menuMB.menu.role}" required="true">
+				            <f:selectItems value="#{menuMB.roleTypes}" var="role" itemLabel="#{role.labelEnGb}" />
+				            <p:ajax update="panel" />
+				        </p:selectOneRadio>
+			        </p:panel>
+			    </pm:field>
+
+	        </c:when>
+	        <c:otherwise>
+	        	<pm:field>
+		            <p:outputLabel id="roleLabel" for="roleType" value="#{msg['menu.role']}" />
+		            <p:panel style="width: 200px">
+				        <p:selectOneRadio id="roleType" value="#{menuMB.menu.role}" required="true">
+				            <f:selectItems value="#{menuMB.roleTypes}" var="role" itemLabel="#{role.labelPtBr}" />
+				            <p:ajax update="panel" />
+				        </p:selectOneRadio>
+			        </p:panel>
+			    </pm:field>
+
+	        </c:otherwise>
+        </c:choose>
+        
+        <pm:field>    
+            <p:outputLabel id="activeLabel" for="active" value="#{msg['menu.active']}" />
+	        <p:selectBooleanCheckbox id="active" value="#{menuMB.menu.active}" required="true">
+	            <f:ajax execute="@this" />
+	        </p:selectBooleanCheckbox>
+	    </pm:field>
+
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{menuMB.actionSave}"
+		rendered="#{not menuMB.managed}">
+		<f:attribute name="pageRedirect" value="/m/menu/mview.faces"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{menuMB.actionSave}"
+		rendered="#{menuMB.managed}">
+		<f:attribute name="pageRedirect" value="/m/menu/mview.faces"/>
+		<f:attribute name="entityId" value="#{menu.id}"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.delete']}" immediate="true" actionListener="#{menuMB.actionRemove}"
+		rendered="#{menuMB.managed}">
+		<f:attribute name="pageRedirect" value="/m/menu/mlist.faces" />
+		<p:confirm header="#{msg['label.confirmation']}" message="#{msg['label.question.delete']}" icon="ui-icon-alert" />
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.cancel']}" immediate="true" actionListener="#{menuMB.actionCancel}">
+		<f:attribute name="pageRedirect" value="/m/menu/mlist.faces" />
+	</p:commandButton>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="#{msg['label.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="#{msg['label.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+ 
+</h:form>
+</ui:define>
+</ui:composition>

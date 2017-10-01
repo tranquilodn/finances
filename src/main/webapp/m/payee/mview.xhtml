@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      template="/layout/mtemplatelist.xhtml">
+<ui:define name="mbody">
+
+<f:metadata>
+	<f:viewAction action="#{payeeMB.prepareView()}" />
+</f:metadata>
+
+<h:form>
+    <p:panel id="panel">
+    	<f:facet name="header">#{msg['payee']} #{msg['label.details']}</f:facet>
+    	
+		<pm:field>
+           	<p:outputLabel for="name" value="#{msg['payee.name']}" />
+           	<p:inputText id="name" value="#{payeeMB.payee.name}" disabled="true" size="40" />
+		</pm:field>
+            
+		<pm:field>
+           	<p:outputLabel for="active" value="#{msg['payee.active']}" />
+           	<p:selectBooleanCheckbox id="active" value="#{payeeMB.payee.active}" disabled="true" />
+		</pm:field>
+
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.edit']}" actionListener="#{payeeMB.actionEdit}">
+		<f:attribute name="pageRedirect" value="/m/payee/medit.faces" />
+		<f:attribute name="entityId" value="#{payeeMB.payee.id}"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.done']}" actionListener="#{categoryMB.actionDone}">
+		<f:attribute name="pageRedirect" value="/m/payee/mlist.faces" />
+	</p:commandButton>
+
+</h:form> 
+</ui:define>
+</ui:composition>

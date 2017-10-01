@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<h:form>
+	<p:commandButton value="#{msg['button.new']} #{msg['payee']}" ajax="false"
+		actionListener="#{payeeMB.actionNew}">
+		<f:attribute name="pageRedirect" value="/pages/payee/edit.faces" />
+	</p:commandButton>
+
+	<p:panel>
+		<h:outputText value="#{msg['label.noRecords']}"  rendered="#{empty payeeList.list}"/>
+			
+		<p:dataTable var="payee" value="#{payeeList.list}" rendered="#{not empty payeeList.list}"
+			emptyMessage="#{msg['label.noResults']}"
+			paginator="true" paginatorPosition="bottom" paginatorAlwaysVisible="false"
+			rows="10" widgetVar="listTable">
+			<f:facet name="header">
+				<p:outputLabel>#{msg['payees']} (#{payeeList.list.size()})</p:outputLabel>
+			</f:facet>
+			<!-- Unnecessary column
+			<p:column headerText="#{msg['payee.id']}" width="75" filterBy="#{payee.id}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="1" maxlength="5"/>
+				</f:facet>
+				<h:outputText value="#{payee.id}" />
+			</p:column>
+			 -->
+			<p:column headerText="#{msg['payee.name']}" filterBy="#{payee.name}"
+				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
+				<f:facet name="filter">
+					<p:inputText onkeyup="PF('listTable').filter()" size="20" />
+				</f:facet>
+				<h:outputText value="#{payee.name}" />
+			</p:column>
+			<p:column headerText="#{msg['payee.active']}" style="text-align: center;" width="85"
+				filterBy="#{payee.active}" footerText="#{msg['filter.label.equals']}" filterMatchMode="equals">
+	            <f:facet name="filter">
+	                <p:selectOneMenu onchange="PF('listTable').filter()" autoWidth="false" style="width: 40px;">
+	                    <f:converter converterId="javax.faces.Boolean" />
+	                    <f:selectItem itemLabel="#{msg['label.all']}" itemValue="" />
+	                    <f:selectItem itemLabel="#{msg['label.yes']}" itemValue="true" />
+	                    <f:selectItem itemLabel="#{msg['label.no']}" itemValue="false" />
+	                </p:selectOneMenu>
+	            </f:facet>
+				<h:outputText value="#{payee.active ? msg['label.yes'] : msg['label.no']}" />
+			</p:column>
+			<p:column style="text-align: center;" width="100">
+				<p:commandLink ajax="false" actionListener="#{payeeMB.actionEdit}">
+					<h:outputText value="#{msg['label.edit']}" />
+					<f:attribute name="pageRedirect" value="/pages/payee/edit.faces"/>
+					<f:attribute name="entityId" value="#{payee.id}"/>
+				</p:commandLink>
+				#{' | '}
+				<p:commandLink ajax="false" actionListener="#{payeeMB.actionView}">
+					<h:outputText value="#{msg['label.view']}" />
+					<f:attribute name="pageRedirect" value="/pages/payee/view.faces"/>
+					<f:attribute name="entityId" value="#{payee.id}"/>
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+</h:form>
+
+</ui:define>
+</ui:composition>

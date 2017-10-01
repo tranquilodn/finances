@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      template="/layout/mtemplatelist.xhtml">
+<ui:define name="mbody">
+
+<f:metadata>
+	<f:viewAction action="#{transactionMB.prepareEdit()}" />
+</f:metadata>
+
+<h:form id="form">
+	<p:messages id="msgs" showDetail="true" />
+	
+    <p:panel id="panel">
+    	<f:facet name="header">#{transactionMB.managed ? msg['label.edit'] : msg['label.new']} #{transactionMB.categoryType == 'R' ? msg['transaction.revenue'] : msg['transaction.expenditure']}</f:facet>
+ 		
+		<pm:field>
+           	<p:outputLabel id="transactionDateLabel" for="transactionDate" value="#{msg['transaction.transactionDate']}" />
+           	<p:calendar id="transactionDate" value="#{transactionMB.transaction.transactionDate}" size="12"
+           		locale="#{transactionMB.locale}" pattern="dd/MM/yyyy" mask="true">
+           		<f:ajax event="dateSelect" execute="@this" render="transactionDateLabel transactionDate" />
+           	</p:calendar>
+        </pm:field>
+
+		<c:choose>
+			<c:when test="#{transactionMB.locale == 'en_GB'}">
+				<pm:field>
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['transaction.categoryType']}" rendered="false" />
+		            <p:panel style="width: 240px" rendered="false">
+				        <p:selectOneRadio id="categoryType" value="#{transactionMB.transaction.categoryType}" readonly="true">
+				            <f:selectItems value="#{transactionMB.categoryTypes}" var="type" itemLabel="#{type.labelEnGb}" />
+				            <p:ajax update="panel" />
+				        </p:selectOneRadio>
+			        </p:panel>
+			    </pm:field>
+
+				<c:choose>
+					<c:when test="#{transactionMB.categoryType == 'R'}">
+						<pm:field>
+				            <p:outputLabel id="categoryLabel" for="categoryEnGb" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryEnGb" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter">
+					            <f:selectItems var="ct" value="#{categoryList.categoryRevenueEnGbListCombo}"
+					            	itemLabel="#{ct.nameEnGb}" />
+					            <p:ajax update="panel" />
+					        </p:selectOneMenu>
+					    </pm:field>
+
+				    </c:when>
+				    <c:otherwise>
+						<pm:field>
+				            <p:outputLabel id="categoryLabel" for="categoryEnGb" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryEnGb" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter">
+					            <f:selectItems var="ct" value="#{categoryList.categoryExpenditureEnGbListCombo}"
+					            	itemLabel="#{ct.nameEnGb}" />
+					            <p:ajax update="panel" />
+					        </p:selectOneMenu>
+						</pm:field>
+
+				    </c:otherwise>
+				</c:choose>
+
+				<pm:field>
+		            <p:outputLabel id="recordTypeLabel" for="recordType" value="#{msg['transaction.recordType']}" />
+			        <p:selectOneMenu id="recordType" value="#{transactionMB.transaction.recordType}" required="true"
+			        	valueChangeListener="#{transactionMB.transaction.recordTypeChangeListener}" effect="fold" editable="false">
+			            <f:selectItems var="rt" value="#{transactionMB.recordTypes}" itemLabel="#{rt.labelEnGb}" />
+			            <p:ajax update="panel" />
+			        </p:selectOneMenu>
+				</pm:field>
+
+			</c:when>
+			<c:otherwise>
+				<pm:field>
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['transaction.categoryType']}" rendered="false" />
+		            <p:panel style="width: 240px" rendered="false">
+				        <p:selectOneRadio id="categoryType" value="#{transactionMB.transaction.categoryType}" readonly="true">
+				            <f:selectItems value="#{transactionMB.categoryTypes}" var="type" itemLabel="#{type.labelPtBr}" />
+				            <p:ajax update="panel" />
+				        </p:selectOneRadio>
+			        </p:panel>
+				</pm:field>
+
+				<c:choose>
+					<c:when test="#{transactionMB.categoryType == 'R'}">
+						<pm:field>
+				            <p:outputLabel id="categoryLabel" for="categoryPtBr" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryPtBr" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter">
+					            <f:selectItems var="ct" value="#{categoryList.categoryRevenuePtBrListCombo}"
+					            	itemLabel="#{ct.namePtBr}" />
+					            <p:ajax update="panel" />
+					        </p:selectOneMenu>
+						</pm:field>
+
+				    </c:when>
+				    <c:otherwise>
+						<pm:field>
+				            <p:outputLabel id="categoryLabel" for="categoryPtBr" value="#{msg['transaction.category']}" />
+					        <p:selectOneMenu id="categoryPtBr" value="#{transactionMB.transaction.category}" required="true"
+					        	valueChangeListener="#{transactionMB.transaction.categoryChangeListener}" style="width: 200px;"
+					        	effect="fold" editable="false" converter="categoryConverter" >
+					            <f:selectItems var="ct" value="#{categoryList.categoryExpenditurePtBrListCombo}"
+					            	itemLabel="#{ct.namePtBr}" />
+					            <p:ajax update="panel" />
+					        </p:selectOneMenu>
+						</pm:field>
+
+				    </c:otherwise>
+				</c:choose>
+
+				<pm:field>
+		            <p:outputLabel id="recordTypeLabel" for="recordType" value="#{msg['transaction.recordType']}" />
+			        <p:selectOneMenu id="recordType" value="#{transactionMB.transaction.recordType}" required="true"
+			        	valueChangeListener="#{transactionMB.transaction.recordTypeChangeListener}" effect="fold" editable="false">
+			            <f:selectItems var="rt" value="#{transactionMB.recordTypes}" itemLabel="#{rt.labelPtBr}" />
+			            <p:ajax update="panel" />
+			        </p:selectOneMenu>
+				</pm:field>
+
+			</c:otherwise>
+        </c:choose>
+
+		<pm:field>
+           	<p:outputLabel id="valueLabel" for="value" value="#{msg['transaction.value']}" />
+            <p:inputNumber id="value" value="#{transactionMB.transaction.value}"
+            	decimalSeparator="." thousandSeparator=",">
+                <p:ajax update="panel" />  
+            </p:inputNumber>
+		</pm:field>
+
+		<pm:field>
+           	<p:outputLabel id="historyLabel" for="history" value="#{msg['transaction.history']}" />
+            <p:inputText id="history" value="#{transactionMB.transaction.history}" size="40">
+                <f:ajax event="blur" execute="@this" render="historyLabel history" />
+            </p:inputText>
+		</pm:field>
+
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{transactionMB.actionSave}"
+		rendered="#{not transactionMB.managed}">
+		<f:attribute name="pageRedirect" value="/m/transaction/mview.faces"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{transactionMB.actionSave}"
+		rendered="#{transactionMB.managed}">
+		<f:attribute name="pageRedirect" value="/m/transaction/mview.faces"/>
+		<f:attribute name="entityId" value="#{transaction.id}"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.delete']}" immediate="true" actionListener="#{transactionMB.actionRemove}"
+		rendered="#{transactionMB.managed}">
+		<f:attribute name="pageRedirect" value="/m/transaction/mlist.faces" />
+		<p:confirm header="#{msg['label.confirmation']}" message="#{msg['label.question.delete']}" icon="ui-icon-alert" />
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.cancel']}" immediate="true" actionListener="#{transactionMB.actionCancel}">
+		<f:attribute name="pageRedirect" value="/m/transaction/mlist.faces" />
+	</p:commandButton>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="#{msg['label.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="#{msg['label.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+ 
+</h:form>
+</ui:define>
+</ui:composition>

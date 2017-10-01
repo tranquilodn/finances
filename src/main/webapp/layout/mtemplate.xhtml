@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
+
+<f:view renderKitId="PRIMEFACES_MOBILE" />
+
+<h:head>
+</h:head>
+<h:body styleClass="mbody">
+
+	<pm:page id="pageMenu">
+		<pm:header>
+			<ui:include src="/layout/mmenu.xhtml" />
+		</pm:header>
+		<pm:content>
+			<c:choose>
+				<c:when test="#{userMB.loggedIn}">
+					<ui:insert name="mbody" />
+				</c:when>
+				<c:otherwise>
+					<ui:insert name="mlogin" />
+				</c:otherwise>
+			</c:choose>
+		</pm:content>
+		<pm:footer>
+			<p:outputLabel style="text-align: center;">Copyright 2017</p:outputLabel>
+		</pm:footer>
+	</pm:page>
+
+</h:body>
+</html>
