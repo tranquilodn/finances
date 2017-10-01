@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<f:metadata>
+	<f:viewAction action="#{payeeMB.prepareEdit()}" />
+</f:metadata>
+
+<h:form id="form">
+	<p:messages id="msgs" />
+	
+    <p:panel id="panel">
+    	<f:facet name="header">#{payeeMB.managed ? msg['label.edit'] : msg['label.new']} #{msg['payee']}</f:facet>
+ 		
+        <h:panelGrid columns="2" cellpadding="5" style="width: 100%">
+        
+            <p:outputLabel id="nameLabel" for="name" value="#{msg['payee.name']}" />
+            <p:inputText id="name" value="#{payeeMB.payee.name}" required="true" size="40">
+                <f:ajax event="blur" execute="@this" render="nameLabel name nameMsg" />
+            </p:inputText>
+            
+            <p:outputLabel id="activeLabel" for="active" value="#{msg['payee.active']}" />
+	        <p:selectBooleanCheckbox id="active" value="#{payeeMB.payee.active}" required="true">
+	            <f:ajax execute="@this" />
+	        </p:selectBooleanCheckbox>
+
+        </h:panelGrid>
+ 
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{payeeMB.actionSave}"
+		rendered="#{not payeeMB.managed}">
+		<f:attribute name="pageRedirect" value="/pages/payee/view.faces"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{payeeMB.actionSave}"
+		rendered="#{payeeMB.managed}">
+		<f:attribute name="pageRedirect" value="/pages/payee/view.faces"/>
+		<f:attribute name="entityId" value="#{payee.id}"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.delete']}" immediate="true" actionListener="#{payeeMB.actionRemove}"
+		rendered="#{payeeMB.managed}">
+		<f:attribute name="pageRedirect" value="/pages/payee/list.faces" />
+		<p:confirm header="#{msg['label.confirmation']}" message="#{msg['label.question.delete']}" icon="ui-icon-alert" />
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.cancel']}" immediate="true" actionListener="#{payeeMB.actionCancel}">
+		<f:attribute name="pageRedirect" value="/pages/payee/list.faces" />
+	</p:commandButton>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="#{msg['label.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="#{msg['label.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+ 
+</h:form>
+</ui:define>
+</ui:composition>

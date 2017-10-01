@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      template="/layout/template.xhtml">
+<ui:define name="body">
+
+<f:metadata>
+	<f:viewAction action="#{categoryMB.prepareEdit()}" />
+</f:metadata>
+
+<h:form id="form">
+	<p:messages id="msgs" />
+	
+    <p:panel id="panel">
+    	<f:facet name="header">#{categoryMB.managed ? msg['label.edit'] : msg['label.new']} #{msg['category']}</f:facet>
+ 		
+        <h:panelGrid columns="2" cellpadding="4" style="width: 70%">
+        
+            <c:choose>
+				<c:when test="#{categoryMB.locale == 'en_GB'}">
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['category.categoryType']}" />
+			        <p:selectOneMenu id="categoryType" value="#{categoryMB.category.categoryType}" required="true"
+			        	valueChangeListener="#{categoryMB.category.categoryTypeChangeListener}" effect="fold" editable="false">
+			            <f:selectItems var="ct" value="#{categoryMB.categoryTypes}" itemLabel="#{ct.labelEnGb}" />
+			            <p:ajax update="panel" />
+			        </p:selectOneMenu>
+
+				</c:when>
+				<c:otherwise>
+		            <p:outputLabel id="categoryTypeLabel" for="categoryType" value="#{msg['category.categoryType']}" />
+			        <p:selectOneMenu id="categoryType" value="#{categoryMB.category.categoryType}" required="true"
+			        	valueChangeListener="#{categoryMB.category.categoryTypeChangeListener}" effect="fold" editable="false">
+			            <f:selectItems var="ct" value="#{categoryMB.categoryTypes}" itemLabel="#{ct.labelPtBr}" />
+			            <p:ajax update="panel" />
+			        </p:selectOneMenu>
+
+				</c:otherwise>
+	        </c:choose>
+
+			<p:outputLabel id="nameEnGbLabel" for="nameEnGb" value="#{msg['category.nameEnGb']}" />
+			<p:inputText id="nameEnGb" value="#{categoryMB.category.nameEnGb}" required="true" size="40">
+			    <f:ajax event="blur" execute="@this" render="nameEnGbLabel nameEnGb" />
+			</p:inputText>
+
+			<p:outputLabel id="namePtBrLabel" for="namePtBr" value="#{msg['category.namePtBr']}" />
+			<p:inputText id="namePtBr" value="#{categoryMB.category.namePtBr}" required="true" size="40">
+			    <f:ajax event="blur" execute="@this" render="namePtBrLabel namePtBr" />
+			</p:inputText>
+
+			<p:outputLabel id="descriptionLabel" for="description" value="#{msg['category.description']}" />
+            <p:inputText id="description" value="#{categoryMB.category.description}" size="40">
+                <f:ajax event="blur" execute="@this" render="descriptionLabel description" />
+            </p:inputText>
+
+            <p:outputLabel id="activeLabel" for="active" value="#{msg['category.active']}" />
+	        <p:selectBooleanCheckbox id="active" value="#{categoryMB.category.active}" required="true">
+	            <f:ajax execute="@this" />
+	        </p:selectBooleanCheckbox>
+
+        </h:panelGrid>
+ 
+   </p:panel>
+
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{categoryMB.actionSave}"
+		rendered="#{not categoryMB.managed}">
+		<f:attribute name="pageRedirect" value="/pages/category/view.faces"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.save']}" ajax="@form" actionListener="#{categoryMB.actionSave}"
+		rendered="#{categoryMB.managed}">
+		<f:attribute name="pageRedirect" value="/pages/category/view.faces"/>
+		<f:attribute name="entityId" value="#{category.id}"/>
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.delete']}" immediate="true" actionListener="#{categoryMB.actionRemove}"
+		rendered="#{categoryMB.managed}">
+		<f:attribute name="pageRedirect" value="/pages/category/list.faces" />
+		<p:confirm header="#{msg['label.confirmation']}" message="#{msg['label.question.delete']}" icon="ui-icon-alert" />
+	</p:commandButton>
+	<p:commandButton value="#{msg['button.cancel']}" immediate="true" actionListener="#{categoryMB.actionCancel}">
+		<f:attribute name="pageRedirect" value="/pages/category/list.faces" />
+	</p:commandButton>
+
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="#{msg['label.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="#{msg['label.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+ 
+</h:form>
+</ui:define>
+</ui:composition>
