@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import lombok.Getter;
 import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
 
 @Transactional
@@ -22,7 +23,7 @@ public abstract class AbstractServiceImpl<T extends IBaseEntity<PK>, PK extends 
 	private Class<T> entityClass;
 
 	@PersistenceContext(unitName = "FinancesPU")
-	private EntityManager entityManager;
+	private @Getter EntityManager entityManager;
 
 	public AbstractServiceImpl(Class<T> entityClass) {
 		this.entityClass = entityClass;
@@ -60,10 +61,6 @@ public abstract class AbstractServiceImpl<T extends IBaseEntity<PK>, PK extends 
 		Root<T> s = qdef.from(entityClass);
 		Query q = getEntityManager().createQuery(qdef.select(cb.count(s)));
 		return ((Long) q.getSingleResult()).intValue();
-	}
-
-	protected EntityManager getEntityManager() {
-		return this.entityManager;
 	}
 
 }
