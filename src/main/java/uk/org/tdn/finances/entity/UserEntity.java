@@ -18,13 +18,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
 import uk.org.tdn.finances.entity.enums.RoleType;
 import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
 import uk.org.tdn.finances.util.converter.EncryptStringConverter;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class UserEntity implements IBaseEntity<Integer> {
+public @Data class UserEntity implements IBaseEntity<Integer> {
 
 	private static final long serialVersionUID = -656260485728015234L;
 
@@ -84,107 +85,8 @@ public class UserEntity implements IBaseEntity<Integer> {
 		this.active = active;
 	}
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getForename() {
-		return forename;
-	}
-
-	public void setForename(String forename) {
-		this.forename = forename;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public void passwordChangeListener(ValueChangeEvent e) {
 		this.setPassword((String) e.getNewValue());
-	}
-
-	public UserEntity getUserMaster() {
-		return userMaster;
-	}
-
-	public void setUserMaster(UserEntity userMaster) {
-		this.userMaster = userMaster;
-	}
-
-	public RoleType getRole() {
-		return role;
-	}
-
-	public void setRole(RoleType role) {
-		this.role = role;
-	}
-
-	public DashboardEntity getDashboard() {
-		return dashboard;
-	}
-
-	public void setDashboard(DashboardEntity dashboard) {
-		this.dashboard = dashboard;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserEntity other = (UserEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
 	}
 
 }

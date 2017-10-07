@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
 import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
 
 /**
@@ -21,7 +22,7 @@ import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
  */
 @Entity
 @Table(name = "payees")
-public class PayeeEntity implements IBaseEntity<Integer> {
+public @Data class PayeeEntity implements IBaseEntity<Integer> {
 
 	private static final long serialVersionUID = 1003115123652137274L;
 
@@ -52,65 +53,6 @@ public class PayeeEntity implements IBaseEntity<Integer> {
 		this.name = name;
 		this.active = active;
 		this.user = user;
-	}
-
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public boolean getActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
-	}
-
-	public Collection<TransactionEntity> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(Collection<TransactionEntity> transactions) {
-		this.transactions = transactions;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PayeeEntity other = (PayeeEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
 	}
 
 }

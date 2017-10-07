@@ -13,11 +13,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
 import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
 
 @Entity
 @Table(name = "dashboard_items")
-public class DashboardItemEntity implements IBaseEntity<Integer> {
+public @Data class DashboardItemEntity implements IBaseEntity<Integer> {
 
 	private static final long serialVersionUID = 569986066757117363L;
 
@@ -46,57 +47,6 @@ public class DashboardItemEntity implements IBaseEntity<Integer> {
 		super();
 		this.dashboardItemName = dashboardItemName;
 		this.dashboardItemDescription = dashboardItemDescription;
-	}
-
-	@Override
-	public Integer getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getDashboardItemName() {
-		return dashboardItemName;
-	}
-
-	public void setDashboardItemName(String dashboardItemName) {
-		this.dashboardItemName = dashboardItemName;
-	}
-
-	public String getDashboardItemDescription() {
-		return dashboardItemDescription;
-	}
-
-	public void setDashboardItemDescription(String dashboardItemDescription) {
-		this.dashboardItemDescription = dashboardItemDescription;
-	}
-
-	public Set<DashboardEntity> getDashboards() {
-		return dashboards;
-	}
-
-	public void setDashboards(Set<DashboardEntity> dashboards) {
-		this.dashboards = dashboards;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DashboardItemEntity other = (DashboardItemEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
 	}
 
 }

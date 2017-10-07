@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
 import uk.org.tdn.finances.entity.enums.CategoryType;
 import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
 
@@ -25,7 +26,7 @@ import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
  */
 @Entity
 @Table(name = "categories")
-public class CategoryEntity implements IBaseEntity<Integer> {
+public @Data class CategoryEntity implements IBaseEntity<Integer> {
 
 	private static final long serialVersionUID = 8960212962711260019L;
 
@@ -72,91 +73,8 @@ public class CategoryEntity implements IBaseEntity<Integer> {
 		this.user = user;
 	}
 
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public CategoryType getCategoryType() {
-		return categoryType;
-	}
-
-	public void setCategoryType(CategoryType categoryType) {
-		this.categoryType = categoryType;
-	}
-
 	public void categoryTypeChangeListener(ValueChangeEvent e) {
 		this.setCategoryType((CategoryType) e.getNewValue());
-	}
-
-	public String getNameEnGb() {
-		return nameEnGb;
-	}
-
-	public void setNameEnGb(String nameEnGb) {
-		this.nameEnGb = nameEnGb;
-	}
-
-	public String getNamePtBr() {
-		return namePtBr;
-	}
-
-	public void setNamePtBr(String namePtBr) {
-		this.namePtBr = namePtBr;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public boolean getActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
-	}
-
-	public Collection<TransactionEntity> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(Collection<TransactionEntity> transactions) {
-		this.transactions = transactions;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CategoryEntity other = (CategoryEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
 	}
 
 }

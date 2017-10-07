@@ -14,13 +14,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
 import uk.org.tdn.finances.entity.enums.MenuType;
 import uk.org.tdn.finances.entity.enums.RoleType;
 import uk.org.tdn.finances.entity.interfaces.IBaseEntity;
 
 @Entity
 @Table(name = "menus")
-public class MenuEntity implements IBaseEntity<Integer> {
+public @Data class MenuEntity implements IBaseEntity<Integer> {
 
 	private static final long serialVersionUID = 1981327675331767392L;
 
@@ -46,7 +47,7 @@ public class MenuEntity implements IBaseEntity<Integer> {
 	private MenuEntity menuGroup;
 
 	@Column(name = "link", nullable = false)
-	private Boolean link = false;
+	private boolean link = false;
 
 	@Column(name = "url", nullable = true, length = 100)
 	private String url;
@@ -82,123 +83,16 @@ public class MenuEntity implements IBaseEntity<Integer> {
 		this.active = active;
 	}
 
-	@Override
-	public Integer getId() {
-		return this.id;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getLabelEnGb() {
-		return labelEnGb;
-	}
-
-	public void setLabelEnGb(String labelEnGb) {
-		this.labelEnGb = labelEnGb;
-	}
-
-	public String getLabelPtBr() {
-		return labelPtBr;
-	}
-
-	public void setLabelPtBr(String labelPtBr) {
-		this.labelPtBr = labelPtBr;
-	}
-
-	public MenuType getMenuType() {
-		return menuType;
-	}
-
-	public void setMenuType(MenuType menuType) {
-		this.menuType = menuType;
-	}
-
 	public void menuTypeChangeListener(ValueChangeEvent e) {
 		this.setMenuType((MenuType) e.getNewValue());
-	}
-
-	public MenuEntity getMenuGroup() {
-		return menuGroup;
-	}
-
-	public void setMenuGroup(MenuEntity menuGroup) {
-		this.menuGroup = menuGroup;
 	}
 
 	public void menuGroupChangeListener(ValueChangeEvent e) {
 		this.setMenuGroup((MenuEntity) e.getNewValue());
 	}
 
-	public boolean isLink() {
-		return link;
-	}
-
-	public void setLink(boolean link) {
-		this.link = link;
-	}
-
 	public void linkChangeListener(ValueChangeEvent e) {
 		this.setLink((Boolean) e.getNewValue());
-	}
-
-	public String getUrl() {
-		return this.url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getMurl() {
-		return murl;
-	}
-
-	public void setMurl(String murl) {
-		this.murl = murl;
-	}
-
-	public String getPosition() {
-		return this.position;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-	public RoleType getRole() {
-		return role;
-	}
-
-	public void setRole(RoleType role) {
-		this.role = role;
-	}
-
-	public boolean isActive() {
-		return this.active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MenuEntity other = (MenuEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
 	}
 
 }

@@ -113,8 +113,8 @@
 				</c:otherwise>
 	        </c:choose>
 
-           	<p:outputLabel id="valueLabel" for="value" value="#{msg['transaction.value']}" />
-            <p:inputNumber id="value" value="#{transactionMB.transaction.value}"
+           	<p:outputLabel id="amountLabel" for="amount" value="#{msg['transaction.amount']}" />
+            <p:inputNumber id="amount" value="#{transactionMB.transaction.amount}"
             	decimalSeparator="." thousandSeparator=",">
                 <p:ajax update="panel" />  
             </p:inputNumber>

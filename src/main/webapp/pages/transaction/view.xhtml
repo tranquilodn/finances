@@ -113,8 +113,8 @@
 				</c:otherwise>
 	        </c:choose>
 
-           	<p:outputLabel id="valueLabel" for="value" value="#{msg['transaction.value']}" />
-            <p:inputNumber id="value" value="#{transactionMB.transaction.value}" disabled="true"
+           	<p:outputLabel id="amountLabel" for="amount" value="#{msg['transaction.amount']}" />
+            <p:inputNumber id="amount" value="#{transactionMB.transaction.amount}" disabled="true"
             	decimalSeparator="." thousandSeparator=","/>
 
            	<p:outputLabel id="historyLabel" for="history" value="#{msg['transaction.history']}" />

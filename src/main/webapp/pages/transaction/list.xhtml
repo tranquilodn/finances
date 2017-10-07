@@ -129,13 +129,13 @@
 				</c:otherwise>
 			</c:choose>
 
-			<p:column headerText="#{msg['transaction.value']}" width="150"
-				filterBy="#{transaction.value}" sortBy="#{transaction.value}"
+			<p:column headerText="#{msg['transaction.amount']}" width="150"
+				filterBy="#{transaction.amount}" sortBy="#{transaction.amount}"
 				footerText="#{msg['filter.label.contains']}" filterMatchMode="contains">
 				<f:facet name="filter">
 					<p:inputText onkeyup="PF('listTable').filter()" size="7" />
 				</f:facet>
-				<h:outputText value="#{transaction.value}">
+				<h:outputText value="#{transaction.amount}">
 					<f:convertNumber locale="#{transactionMB.locale}" minFractionDigits="#{transactionMB.defaultFractionDigits}"
 						currencySymbol="#{transactionMB.currencySymbol}"/>
 				</h:outputText>
