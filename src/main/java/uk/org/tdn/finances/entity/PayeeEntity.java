@@ -41,8 +41,11 @@ public @Data class PayeeEntity implements IBaseEntity<Integer> {
 	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	private UserEntity user;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "payee", fetch = FetchType.LAZY)
 	private Collection<TransactionEntity> transactions;
+
+	@OneToMany(mappedBy = "payee", fetch = FetchType.LAZY)
+	private Collection<BillEntity> bills;
 
 	public PayeeEntity() {
 		super();

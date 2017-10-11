@@ -59,8 +59,12 @@ public @Data class TransactionEntity implements IBaseEntity<Long> {
 	private String history;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
 	private UserEntity user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "payee_id", referencedColumnName = "id", nullable = true)
+	private PayeeEntity payee;
 
 	public TransactionEntity() {
 		super();

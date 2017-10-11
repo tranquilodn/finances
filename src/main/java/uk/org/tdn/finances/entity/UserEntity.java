@@ -1,5 +1,7 @@
 package uk.org.tdn.finances.entity;
 
+import java.util.Collection;
+
 import javax.faces.event.ValueChangeEvent;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -67,23 +70,14 @@ public @Data class UserEntity implements IBaseEntity<Integer> {
 	@Column(name = "active")
 	private Boolean active = false;
 
-	public UserEntity() {
-		super();
-	}
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private Collection<TransactionEntity> transactions;
 
-	public UserEntity(String title, String forename, String surname, String email, String password,
-			UserEntity userMaster, RoleType role, DashboardEntity dashboard, Boolean active) {
-		super();
-		this.title = title;
-		this.forename = forename;
-		this.surname = surname;
-		this.email = email;
-		this.password = password;
-		this.userMaster = userMaster;
-		this.role = role;
-		this.dashboard = dashboard;
-		this.active = active;
-	}
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private Collection<PayeeEntity> payees;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private Collection<BillEntity> bills;
 
 	public void passwordChangeListener(ValueChangeEvent e) {
 		this.setPassword((String) e.getNewValue());
